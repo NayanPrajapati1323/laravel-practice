@@ -5,5 +5,6 @@ return [
     "about" => "About",
     "home" => "Home",
     "contact" => "Contact",
+    "greeting" => "Hi everyone , This is :name from Ahmedabad",
 ];
 
