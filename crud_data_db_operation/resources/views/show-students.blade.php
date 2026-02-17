@@ -13,38 +13,39 @@
     <form action="{{ route('search-students') }}" method="get">
         <input type="text" placeholder="search with name" name="search">
         <button type="submit">Search</button>
-        <a href="{{ route('show-students') }}">Reset</a>
+        <button type="submit" href="{{ route('show-students') }}">Reset</button>
     </form>
     <form action="{{ route('delete-multi-students') }}" method="post">
         @csrf
         <button type="submit">Delete Selected</button>
-    </form>
-    <table>
-        <thead>
-            <tr>
-                <th>Selection</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($students as $student)
-                <tr>
-                    <td><input type="checkbox" name="" id="" value="{{ $student->id }}"></td>
-                    <td>{{ $student->name }}</td>
-                    <td>{{ $student->email }}</td>
-                    <td>{{ $student->phone }}</td>
-                    <td>
 
-                        <a href="edit-students/{{ $student->id }}">Edit</a>
-                        <a href="delete-students/{{ $student->id }}">Delete</a>
-                    </td>
+        <table>
+            <thead>
+                <tr>
+                    <th>Selection</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($students as $student)
+                    <tr>
+                        <td><input type="checkbox" name="ids[]" id="" value="{{ $student->id }}"></td>
+                        <td>{{ $student->name }}</td>
+                        <td>{{ $student->email }}</td>
+                        <td>{{ $student->phone }}</td>
+                        <td>
+
+                            <a href="edit-students/{{ $student->id }}">Edit</a>
+                            <a href="delete-students/{{ $student->id }}">Delete</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </form>
     {{ $students->withQueryString()->links() }}
 </div>
 
@@ -131,13 +132,15 @@
         cursor: pointer;
         background-color: #4CAF50;
         color: white;
-        width: 50%;
+        width: 100px;
+        height: 40px;
         margin: 0 auto;
         transition: all 0.3s ease;
     }
 
     button:hover {
-        background-color: #45a049;
-        padding: 10px;
+        background-color: #246328ff;
+        border: 1px solid #246328ff;
+
     }
 </style>
