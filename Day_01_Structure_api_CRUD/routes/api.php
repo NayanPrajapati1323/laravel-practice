@@ -10,14 +10,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     //public rooute
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::middleware('throttle:10,1')->group(function () {
+        Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/login', [AuthController::class, 'login']);
+    });
 
     //protected route
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::apiResource('posts', PostController::class);
+        // Route::apiResource('/posts.comments', CommentController::class);
+        Route::post('/posts/{post}/comments', [PostController::class, 'storeComment']);
         Route::get('/user/{id}', [UserController::class, 'show']);
         Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
         Route::put('/comments/{comment}', [CommentController::class, 'update']);

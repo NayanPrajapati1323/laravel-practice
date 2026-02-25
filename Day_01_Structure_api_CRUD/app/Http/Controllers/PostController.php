@@ -14,8 +14,10 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
+        // \DB::enableQueryLog();
         $posts = Post::with(['user', 'comments.user'])
             ->when($request->search, fn($q) => $q->search($request->search))
             ->when($request->user_id, fn($q) => $q->user($request->user_id))
@@ -23,7 +25,15 @@ class PostController extends Controller
             ->when($request->to_date, fn($q) => $q->toDate($request->to_date))
             ->sort($request->sort)
             ->paginate(5);
+        // $posts = Post::query()->get();
 
+        // foreach ($posts as $post) {
+        //     $post->user;
+        //     foreach ($post->comments as $comment) {
+        //         $comment->user;
+        //     }
+        // }
+        // dd(\DB::getQueryLog());
         return $this->success(
             PostResource::collection($posts),
             null,
