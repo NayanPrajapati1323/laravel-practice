@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,7 @@ Route::prefix('v1')->group(function () {
 
     //protected route
 
-    Route::middleware('')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::apiResource('posts', PostController::class);
         // Route::apiResource('/posts.comments', CommentController::class);
@@ -26,5 +27,25 @@ Route::prefix('v1')->group(function () {
         Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
         Route::put('/comments/{comment}', [CommentController::class, 'update']);
         Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+    });
+
+    // Route::get('/test-chunk', function () {
+
+    //     \App\Models\Post::chunkById(100, function ($posts) {
+    //         foreach ($posts as $post) {
+    //             logger("Processing Post ID: " . $post->id);
+    //         }
+    //     });
+
+    //     return "Done";
+    // });
+
+    Route::get('/test-cursor', function () {
+
+        foreach (Post::cursor() as $post) {
+            logger("Processing Post ID: " . $post->id);
+        }
+
+        return "Done";
     });
 });
